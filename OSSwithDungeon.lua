@@ -787,18 +787,23 @@ repeat
 until game:IsLoaded() and not (loading and loading.Visible)
 
 local placeId = game.PlaceId
+local IsDungeon = placeId == 73902483975735   -- Moved UP here
+
 if placeId == 2753915549 or placeId == 85211729168715 then
     World1 = true
 elseif placeId == 4442272183 or placeId == 79091703265657 then
     World2 = true
 elseif placeId == 7449423635 or placeId == 100117331123089 then
     World3 = true
+elseif IsDungeon then
+    -- Dungeon detected: we don't set World1/2/3, but we must NOT kick
+    Sea = true
 else
     plr:Kick("❌ Error Blox Fruits - World not recognized")
 end
 
-Sea = World1 or World2 or World3
-local IsDungeon = placeId == 73902483975735
+-- If we didn't set Sea above, fallback to the world flags
+Sea = Sea or World1 or World2 or World3
 
 Marines = function()
     commF:InvokeServer("SetTeam", "Marines")
